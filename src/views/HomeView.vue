@@ -1,5 +1,6 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed } from 'vue'
+import { withBase } from '@/lib/asset'
 import NextEpisodePreview from '@/components/NextEpisodePreview.vue'
 import PostCard from '@/components/PostCard.vue'
 import TagPill from '@/components/TagPill.vue'
@@ -61,7 +62,7 @@ const episodeCount = computed(() => diaryEntries.length)
       <figure class="relative order-1 lg:order-2">
         <div class="relative rotate-[1.5deg] border-[4px] border-ink-800 bg-white p-2 shadow-[10px_10px_0_#1f1b1d] dark:border-pop-200 dark:bg-ink-800 dark:shadow-[10px_10px_0_#fdf46d]">
           <img
-            :src="site.poster"
+            :src="withBase(site.poster)"
             alt="キルミーベイベー Blu-ray BOX 海报"
             class="block w-full"
             fetchpriority="high"
@@ -154,3 +155,4 @@ const episodeCount = computed(() => diaryEntries.length)
     </div>
   </section>
 </template>
+

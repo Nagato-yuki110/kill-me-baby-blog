@@ -1,4 +1,5 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
+import { withBase } from '@/lib/asset'
 import { site } from '@/site'
 
 const stack = [
@@ -25,7 +26,7 @@ const likes = [
       <header class="flex flex-col gap-5 sm:flex-row sm:items-center">
         <div class="relative shrink-0">
           <img
-            :src="site.portrait"
+            :src="withBase(site.portrait)"
             alt=""
             class="size-24 border-[3px] border-ink-800 object-cover object-[50%_20%] shadow-[5px_5px_0_#1f1b1d]"
           />

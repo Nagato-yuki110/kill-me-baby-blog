@@ -1,4 +1,5 @@
 import type { DefineComponent } from 'vue'
+import { withBase } from './asset'
 import { normalizeDate, parseFileName, toPlainText, toStringArray } from './posts'
 
 /** 一条日记的 frontmatter */
@@ -87,7 +88,7 @@ const entries: DiaryEntry[] = Object.entries(modules)
       date,
       mood: fm.mood ?? '',
       weather: fm.weather ?? '',
-      photos: [...new Set([...(fm.photos ?? []), ...extractInlinePhotos(source)])],
+      photos: [...new Set([...(fm.photos ?? []), ...extractInlinePhotos(source)])].map(withBase),
       excerpt: toPlainText(source),
       component: mod.default,
       source,
