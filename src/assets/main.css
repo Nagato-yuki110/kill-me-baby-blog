@@ -1,0 +1,446 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source "./posts/**/*.md";
+@source "./diary/**/*.md";
+
+@theme {
+  --font-sans: 'Noto Sans JP', 'Yu Gothic UI', 'Yu Gothic', 'Meiryo', 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, Menlo, monospace;
+  /* 海报标题那种粗圆黑体 */
+  --font-pop: 'Noto Sans JP', 'Yu Gothic UI', 'Yu Gothic', 'Hiragino Maru Gothic ProN', 'Microsoft YaHei', sans-serif;
+
+  /* 海报黄 */
+  --color-pop-50: #fefce8;
+  --color-pop-100: #fdf9a8;
+  --color-pop-200: #fdf46d;
+  --color-pop-300: #faf25f;
+  --color-pop-400: #f6ea3a;
+  --color-pop-500: #e8d818;
+  --color-pop-600: #c8b90c;
+
+  /* 墨黑 */
+  --color-ink-50: #f7f7f5;
+  --color-ink-100: #dedcd8;
+  --color-ink-200: #b8b4ae;
+  --color-ink-300: #8b8681;
+  --color-ink-400: #5f5a56;
+  --color-ink-500: #3a3436;
+  --color-ink-600: #2b2628;
+  --color-ink-700: #1f1b1d;
+  --color-ink-800: #141113;
+  --color-ink-900: #0b0a0b;
+
+  /* 角色色：阿呆的紫发、索尼娅的蓝、阿格丽的红 */
+  --color-yasuna: #5b3a6b;
+  --color-sonya: #2f5d8a;
+  --color-agiri: #c0392b;
+}
+
+:root {
+  color-scheme: light;
+  --c-bg: #fdf46d;
+  --c-surface: #fffef8;
+  --c-text: #1f1b1d;
+  --c-text-soft: #4a4446;
+  --c-line: #1f1b1d;
+  --c-accent: #f6ea3a;
+  --c-shadow: #1f1b1d;
+  --veil: rgb(253 244 109 / 0.76);
+  --poster-opacity: 0.18;
+}
+
+:root.dark {
+  color-scheme: dark;
+  --c-bg: #141113;
+  --c-surface: #1f1b1d;
+  --c-text: #fdf46d;
+  --c-text-soft: #d8d4c8;
+  --c-line: #fdf46d;
+  --c-accent: #f6ea3a;
+  --c-shadow: #000;
+  --veil: rgb(20 17 19 / 0.9);
+  --poster-opacity: 0.16;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    scroll-padding-top: 7rem;
+  }
+
+  body {
+    background-color: var(--c-bg);
+    color: var(--c-text);
+    @apply font-sans;
+  }
+
+  ::selection {
+    background: #1f1b1d;
+    color: #fdf46d;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-pop);
+    font-weight: 900;
+    letter-spacing: 0.02em;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #1f1b1d transparent;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-3xl px-5 sm:px-6;
+  }
+  .container-wide {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-6;
+  }
+
+  .font-pop {
+    font-family: var(--font-pop);
+    font-weight: 900;
+  }
+
+  /* 粗描边 + 硬阴影：整站的基础积木 */
+  .pop-card {
+    background: var(--c-surface);
+    border: 3px solid var(--c-line);
+    box-shadow: 6px 6px 0 var(--c-shadow);
+  }
+
+  .pop-card-sm {
+    background: var(--c-surface);
+    border: 3px solid var(--c-line);
+    box-shadow: 4px 4px 0 var(--c-shadow);
+  }
+
+  /* 贴纸按钮 */
+  .pop-btn {
+    @apply inline-flex items-center gap-2 border-[3px] px-5 py-2.5 font-pop text-sm font-black tracking-wide transition;
+    border-color: var(--c-line);
+    box-shadow: 4px 4px 0 var(--c-shadow);
+    background: var(--c-accent);
+    color: #1f1b1d;
+  }
+  .pop-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--c-shadow);
+  }
+  .pop-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--c-shadow);
+  }
+  .pop-btn-ghost {
+    background: var(--c-surface);
+    color: var(--c-text);
+  }
+
+  /* 标签 / 小贴纸 */
+  .pop-tag {
+    @apply inline-flex items-center gap-1 border-2 px-2 py-0.5 font-pop text-[11px] font-bold;
+    border-color: var(--c-line);
+    background: var(--c-surface);
+    color: var(--c-text);
+  }
+  .pop-tag-yellow {
+    background: var(--c-accent);
+    color: #1f1b1d;
+  }
+
+  /* 标题上的「描边字」效果：白边 + 黑投影 */
+  .pop-outline {
+    color: #fffef8;
+    text-shadow:
+      -2px -2px 0 #1f1b1d,
+      2px -2px 0 #1f1b1d,
+      -2px 2px 0 #1f1b1d,
+      2px 2px 0 #1f1b1d,
+      6px 6px 0 rgb(31 27 29 / 0.35);
+  }
+
+  /* 网点纸 */
+  .halftone {
+    background-image: radial-gradient(#1f1b1d 1.2px, transparent 1.3px);
+    background-size: 8px 8px;
+  }
+
+  /* 斜条纹 */
+  .stripes {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      #1f1b1d 0 8px,
+      transparent 8px 16px
+    );
+  }
+
+  /* 阅读进度条 */
+  .reading-progress {
+    @apply fixed left-0 top-0 z-50 h-1 transition-[width] duration-150;
+    background: #1f1b1d;
+  }
+  :root.dark .reading-progress {
+    background: #fdf46d;
+  }
+}
+
+/* ---------- 海报背景 ---------- */
+.poster-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.poster-backdrop img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+  opacity: var(--poster-opacity);
+  filter: saturate(1.05) contrast(1.02);
+}
+
+/* 压亮/压暗，让前景可读 */
+.poster-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    var(--veil) 0%,
+    color-mix(in srgb, var(--c-bg) 82%, transparent) 45%,
+    var(--c-bg) 82%
+  );
+}
+
+:root.dark .poster-backdrop::after {
+  background: linear-gradient(
+    180deg,
+    var(--veil) 0%,
+    color-mix(in srgb, var(--c-bg) 88%, transparent) 45%,
+    var(--c-bg) 82%
+  );
+}
+
+/* 大网点纹，站在颜色区块上 */
+.dot-field {
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+  opacity: 0.14;
+  background-image: radial-gradient(#1f1b1d 1.4px, transparent 1.5px);
+  background-size: 12px 12px;
+  mask-image: linear-gradient(180deg, #000 0%, transparent 55%);
+}
+
+:root.dark .dot-field {
+  background-image: radial-gradient(#fdf46d 1.4px, transparent 1.5px);
+  opacity: 0.1;
+}
+
+/* 滚动字幕条 */
+.marquee {
+  overflow: hidden;
+  border-block: 3px solid var(--c-line);
+  background: var(--c-accent);
+  color: #1f1b1d;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 26s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- 正文排版 ---------- */
+.prose {
+  @apply text-[1.0625rem] leading-8;
+  color: var(--c-text);
+}
+
+.prose > * + * {
+  @apply mt-6;
+}
+
+.prose h2 {
+  @apply mb-4 mt-14 scroll-mt-28 text-2xl;
+}
+
+.prose h2::after {
+  content: '';
+  display: block;
+  width: 3.5rem;
+  height: 6px;
+  margin-top: 0.5rem;
+  background: var(--c-accent);
+  border: 2px solid var(--c-line);
+}
+
+.prose h3 {
+  @apply mb-3 mt-10 scroll-mt-28 text-xl;
+}
+
+.prose h4 {
+  @apply mb-2 mt-8 scroll-mt-28 text-lg;
+}
+
+.prose h2 .header-anchor,
+.prose h3 .header-anchor {
+  @apply mr-2 text-lg font-normal no-underline opacity-0 transition-opacity;
+  color: var(--c-text-soft);
+}
+
+.prose h2:hover .header-anchor,
+.prose h3:hover .header-anchor {
+  @apply opacity-100;
+}
+
+.prose a {
+  @apply font-bold no-underline;
+  color: #1f1b1d;
+  background: linear-gradient(transparent 62%, var(--color-pop-300) 62%);
+}
+
+:root.dark .prose a {
+  color: #fdf46d;
+  background: linear-gradient(transparent 62%, rgb(253 244 109 / 0.25) 62%);
+}
+
+.prose strong {
+  @apply font-black;
+}
+
+.prose ul {
+  @apply list-disc space-y-2 pl-6;
+}
+
+.prose ol {
+  @apply list-decimal space-y-2 pl-6;
+}
+
+.prose li::marker {
+  color: var(--c-line);
+  font-weight: 900;
+}
+
+.prose li > ul,
+.prose li > ol {
+  @apply mt-2;
+}
+
+.prose blockquote {
+  @apply border-2 border-l-8 py-2 pl-5 pr-4 italic;
+  border-color: var(--c-line);
+  background: #fdf9a8;
+  color: #1f1b1d;
+  box-shadow: 4px 4px 0 var(--c-shadow);
+}
+
+:root.dark .prose blockquote {
+  background: #2b2628;
+  color: #fdf46d;
+}
+
+.prose blockquote > * + * {
+  @apply mt-3;
+}
+
+.prose :not(pre) > code {
+  @apply border-2 px-1.5 py-0.5 font-mono text-[0.85em] font-bold;
+  border-color: var(--c-line);
+  background: var(--c-accent);
+  color: #1f1b1d;
+}
+
+.prose pre.shiki {
+  @apply my-8 overflow-x-auto border-[3px] text-sm leading-6;
+  border-color: var(--c-line);
+  box-shadow: 5px 5px 0 var(--c-shadow);
+}
+
+.prose pre.shiki code {
+  @apply font-mono;
+}
+
+.prose .shiki,
+.prose .shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+.dark .prose .shiki,
+.dark .prose .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+.prose table {
+  @apply my-8 w-full overflow-hidden border-[3px] text-sm;
+  border-color: var(--c-line);
+  box-shadow: 5px 5px 0 var(--c-shadow);
+  border-collapse: collapse;
+}
+
+.prose thead {
+  background: var(--c-accent);
+  color: #1f1b1d;
+}
+
+.prose th {
+  @apply border-b-2 px-3 py-2 text-left font-black;
+  border-color: var(--c-line);
+}
+
+.prose td {
+  @apply px-3 py-2;
+  border-top: 2px solid color-mix(in srgb, var(--c-line) 30%, transparent);
+}
+
+.prose hr {
+  @apply my-12 border-0;
+  height: 4px;
+  background: var(--c-accent);
+  border: 2px solid var(--c-line);
+}
+
+.prose img {
+  @apply border-[3px];
+  border-color: var(--c-line);
+  box-shadow: 5px 5px 0 var(--c-shadow);
+}
+
+/* 路由切换 */
+.fade-enter-active,
+.fade-leave-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(6px) rotate(-0.4deg);
+}
+.fade-leave-to {
+  opacity: 0;
+}
