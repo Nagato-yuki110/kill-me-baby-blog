@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --build && vite build",
+    "build:pages": "vite build --base=/kill-me-baby-blog/ && node scripts/to-docs.mjs",
     "preview": "vite preview",
     "typecheck": "vue-tsc --build"
   },

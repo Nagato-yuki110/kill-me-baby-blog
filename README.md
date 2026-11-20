@@ -1,5 +1,8 @@
 # キルミー日記 · 长门大法师的个人博客
 
+**线上地址：https://nagato-yuki110.github.io/kill-me-baby-blog/**
+**代码仓库：https://github.com/Nagato-yuki110/kill-me-baby-blog**
+
 一个用 **Vue 3 + Vite + TypeScript + Tailwind CSS v4** 写的个人博客 + 日记本。文章和日记都是仓库里的 Markdown 文件，写完保存即可发布，不需要后台和数据库。
 
 视觉上照着《キルミーベイベー》的海报做：亮黄底、粗黑描边、贴纸一样的元素、滚动的 OP 字幕条。默认日间（黄），切到夜间是黑底黄字。
@@ -124,12 +127,19 @@ photos:
 - `src/site.ts`：站点名、作者、tagline、导航、社交链接、海报路径、字幕条文案
 - `public/images/poster.png`：首页主视觉 + 全站背景（换图不用改代码）
 
-## 部署
+## 部署（已经配好）
 
-`pnpm build` 之后把 `dist/` 部署到任意静态托管即可：
+线上跑在 **GitHub Pages**，发布目录是仓库里的 `docs/`（Pages 设置：`main` 分支 → `/docs`）。
 
-- **Vercel / Netlify**：框架选 Vite，构建命令 `pnpm build`，输出目录 `dist`
-- **GitHub Pages**：仓库名不是 `<user>.github.io` 时，设置 `base: '/仓库名/'` 后构建
-- **Nginx**：需要把未知路径回退到 `index.html`（`try_files $uri $uri/ /index.html`）
+改完内容后更新线上：
+
+```bash
+pnpm build:pages   # 构建到 docs/，并生成 404.html 回退
+# 然后把 docs/ 和 src/ 的改动推上去
+```
+
+- 站点部署在 `/kill-me-baby-blog/` 子路径下，所以构建要带 `--base=/kill-me-baby-blog/`（`build:pages` 已经带上了）
+- `docs/404.html` 是 history 路由的回退页，深层链接刷新才不会 404
+- 换自定义域名的话，把 base 改回 `/` 并加一个 `CNAME` 文件即可
 
 > 「写日记」功能依赖浏览器的本地文件权限，只在你自己电脑上的 `pnpm dev` 环境有意义；部署到线上后那个页面仍会显示，但保存会失败。如果不想要，删掉 `/diary/new` 路由和入口链接即可。
